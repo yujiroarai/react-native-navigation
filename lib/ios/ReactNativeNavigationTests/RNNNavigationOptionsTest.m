@@ -16,8 +16,8 @@
 	XCTAssertTrue([options isKindOfClass:[RNNNavigationOptions class]]);
 }
 -(void)testAddsStyleFromDictionaryWithInit{
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBarBackgroundColor" : @(0xff0000ff)}];
-	XCTAssertTrue(options.topBarBackgroundColor);
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"screenBackgroundColor" : @(0xff0000ff)}];
+	XCTAssertTrue(options.screenBackgroundColor);
 }
 -(void)testReturnsNilWhenStyleDoesNotExist{
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBarBackgroundColor" : @(0xff0000ff)}];

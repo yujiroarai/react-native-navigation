@@ -15,15 +15,16 @@
 @property (nonatomic, strong) NSNumber* topBarTranslucent;
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
-
-
-
+@property (nonatomic, strong) NSNumber* topBarTransparent;
+@property (nonatomic) int topBarTransparentTag;
+@property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
 
 -(void)applyOn:(UIViewController*)viewController;
 -(void)mergeWith:(NSDictionary*)otherOptions;
+-(void)storeOriginalTopBarImages:(UIViewController*)viewController;
 
 @end
 

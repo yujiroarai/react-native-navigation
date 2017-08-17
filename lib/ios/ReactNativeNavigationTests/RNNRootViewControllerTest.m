@@ -197,6 +197,29 @@
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
+-(void)testTopBarTransparent_BOOL_True {
+	NSNumber* topBarTransparentInput = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	self.options.topBarTransparent = topBarTransparentInput;
+	[self.uut viewWillAppear:false];
+	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:78264803];
+	XCTAssertTrue(transparentView);
+	XCTAssertTrue([NSStringFromCGRect(transparentView.frame) isEqual: NSStringFromCGRect(CGRectZero)]);
+}
+
+-(void)testTopBarTransparent_BOOL_false {
+	NSNumber* topBarTransparentInput = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	self.options.topBarTransparent = topBarTransparentInput;
+	[self.uut viewWillAppear:false];
+	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:78264803];
+	XCTAssertFalse(transparentView);
+}
+
+-(void)testStoreOriginalTopBarImages {
+	
+}
+
 // TODO: Currently not passing
 -(void)testTopBarTextFontFamily_invalidFont{
 	NSString* inputFont = @"HelveticaNeueeeee";
