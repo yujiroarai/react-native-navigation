@@ -111,8 +111,12 @@
 			viewController.navigationController.tabBarItem.badgeValue = badge;
 		} else {
 			viewController.tabBarItem.badgeValue = badge;
+<<<<<<< HEAD
 		}
 		
+=======
+	  }
+>>>>>>> 12560f03e27e568ca0a84e3d6be3a57587de96e8
 	}
 	
 	if (self.topBarTranslucent) {
@@ -120,6 +124,7 @@
 			viewController.navigationController.navigationBar.translucent = YES;
 		} else {
 			viewController.navigationController.navigationBar.translucent = NO;
+<<<<<<< HEAD
 		}
 		
 	}
@@ -149,6 +154,9 @@
 		}
 	} else {
 		disableTopBarTransparent();
+=======
+		}		
+>>>>>>> 12560f03e27e568ca0a84e3d6be3a57587de96e8
 	}
 	
 	
