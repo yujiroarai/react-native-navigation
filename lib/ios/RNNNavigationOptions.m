@@ -4,6 +4,8 @@
 
 @implementation RNNNavigationOptions
 
+const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
+
 -(instancetype)init {
 	return [self initWithDict:@{}];
 }
@@ -23,7 +25,6 @@
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
 	self.topBarTransparent = [navigationOptions objectForKey:@"topBarTransparent"];
-	self.topBarTransparentTag = 78264803;
 	
 	return self;
 }
@@ -32,19 +33,6 @@
 	for (id key in otherOptions) {
 		[self setValue:[otherOptions objectForKey:key] forKey:key];
 	}
-}
-
--(void)storeOriginalTopBarImages:(UIViewController*)viewController {
-	NSMutableDictionary *originalTopBarImages = [@{} mutableCopy];
-	UIImage *bgImage = [viewController.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
-	if (bgImage != nil) {
-		originalTopBarImages[@"backgroundImage"] = bgImage;
-	}
-	UIImage *shadowImage = viewController.navigationController.navigationBar.shadowImage;
-	if (shadowImage != nil) {
-		originalTopBarImages[@"shadowImage"] = shadowImage;
-	}
-	self.originalTopBarImages = originalTopBarImages;
 }
 
 -(void)applyOn:(UIViewController*)viewController {
@@ -111,12 +99,7 @@
 			viewController.navigationController.tabBarItem.badgeValue = badge;
 		} else {
 			viewController.tabBarItem.badgeValue = badge;
-<<<<<<< HEAD
 		}
-		
-=======
-	  }
->>>>>>> 12560f03e27e568ca0a84e3d6be3a57587de96e8
 	}
 	
 	if (self.topBarTranslucent) {
@@ -124,13 +107,12 @@
 			viewController.navigationController.navigationBar.translucent = YES;
 		} else {
 			viewController.navigationController.navigationBar.translucent = NO;
-<<<<<<< HEAD
 		}
 		
 	}
 	
 	void (^disableTopBarTransparent)() = ^void(){
-		UIView *transparentView = [viewController.navigationController.navigationBar viewWithTag:self.topBarTransparentTag];
+		UIView *transparentView = [viewController.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 		if (transparentView){
 			[transparentView removeFromSuperview];
 			[viewController.navigationController.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] forBarMetrics:UIBarMetricsDefault];
@@ -138,15 +120,15 @@
 			self.originalTopBarImages = nil;
 		}
 	};
-	
+
 	if (self.topBarTransparent) {
 		if ([self.topBarTransparent boolValue]) {
-			if (![viewController.navigationController.navigationBar viewWithTag:self.topBarTransparentTag]){
+			if (![viewController.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]){
 				[self storeOriginalTopBarImages:viewController];
 				[viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 				viewController.navigationController.navigationBar.shadowImage = [UIImage new];
 				UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
-				transparentView.tag = self.topBarTransparentTag;
+				transparentView.tag = TOP_BAR_TRANSPARENT_TAG;
 				[viewController.navigationController.navigationBar insertSubview:transparentView atIndex:0];
 			}
 		} else {
@@ -154,11 +136,19 @@
 		}
 	} else {
 		disableTopBarTransparent();
-=======
-		}		
->>>>>>> 12560f03e27e568ca0a84e3d6be3a57587de96e8
 	}
-	
-	
+}
+
+-(void)storeOriginalTopBarImages:(UIViewController*)viewController {
+	NSMutableDictionary *originalTopBarImages = [@{} mutableCopy];
+	UIImage *bgImage = [viewController.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
+	if (bgImage != nil) {
+		originalTopBarImages[@"backgroundImage"] = bgImage;
+	}
+	UIImage *shadowImage = viewController.navigationController.navigationBar.shadowImage;
+	if (shadowImage != nil) {
+		originalTopBarImages[@"shadowImage"] = shadowImage;
+	}
+	self.originalTopBarImages = originalTopBarImages;
 }
 @end

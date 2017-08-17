@@ -44,12 +44,14 @@ describe('screen style', () => {
     await element(by.id('scrollView')).swipe('down', 'fast');
     await expect(element(by.type('UINavigationBar'))).toBeVisible();
   });
+
   it('makes topBar transparent and opaque', async () => {
     await elementByLabel('Push Options Screen').tap();
     await elementByLabel('Top Bar Transparent').tap();
     await expect(element(by.type('_UIVisualEffectBackdropView'))).toBeNotVisible();
     await elementByLabel('Top Bar Opaque').tap();
     await expect(element(by.type('_UIVisualEffectBackdropView')).atIndex(1)).toBeVisible();
+  });
 
   it('set Tab Bar badge on a current Tab', async () => {
     await elementByLabel('Switch to tab based app').tap();
