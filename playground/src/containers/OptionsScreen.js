@@ -21,6 +21,7 @@ class OptionsScreen extends Component {
     this.onClickScrollViewScreen = this.onClickScrollViewScreen.bind(this);
     this.onClickTopBarTransparent = this.onClickTopBarTransparent.bind(this);
     this.onClickTopBarOpaque = this.onClickTopBarOpaque.bind(this);
+    this.onClickCustomTranstition = this.onClickCustomTranstition.bind(this);
   }
 
   render() {
@@ -32,7 +33,8 @@ class OptionsScreen extends Component {
         <Button title="Hide Top Bar" onPress={this.onClickHideTopBar} />
         <Button title="Top Bar Transparent" onPress={this.onClickTopBarTransparent} />
         <Button title="Top Bar Opaque" onPress={this.onClickTopBarOpaque} />
-        <Button title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
+        <Button tag = {'someIdHaha'} title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
+        <Button title="Custom Transition Page" onPress={this.onClickCustomTranstition} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -53,6 +55,13 @@ class OptionsScreen extends Component {
       name: 'navigation.playground.ScrollViewScreen'
     });
   }
+
+  onClickCustomTranstition() {
+    Navigation.push(this.props.containerId, {
+      name: 'navigation.playground.CustomTransitionOrigin'
+    });
+  }
+
   onClickTopBarTransparent() {
     Navigation.setOptions(this.props.containerId, {
       topBarTransparent: true

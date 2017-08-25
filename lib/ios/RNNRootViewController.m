@@ -1,13 +1,15 @@
 
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
+#import "RNNAnimationController.h"
 
-
-@interface RNNRootViewController()
+@interface RNNRootViewController() 
 @property (nonatomic, strong) NSString* containerId;
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
+@property (nonatomic, strong) RNNAnimationController* animator;
+
 
 @end
 
@@ -29,8 +31,10 @@
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	
-	
+	self.animator = [[RNNAnimationController alloc] init];
+	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
+	self.navigationController.delegate = self;
+
 	return self;
 }
 
@@ -38,6 +42,10 @@
 	[super viewWillAppear:animated];
 	[self.navigationOptions applyOn:self];
 }
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	}
 
 - (BOOL)prefersStatusBarHidden {
 	return [self.navigationOptions.statusBarHidden boolValue]; // || self.navigationController.isNavigationBarHidden;
@@ -52,6 +60,29 @@
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendContainerDidDisappear:self.containerId];
 }
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+								  animationControllerForOperation:(UINavigationControllerOperation)operation
+											   fromViewController:(UIViewController*)fromVC
+												 toViewController:(UIViewController*)toVC {
+{
+	if (operation == UINavigationControllerOperationPush) {
+		if (self.navigationOptions.customTransition) {
+			
+			return self.animator;
+		}	else {
+			return nil;
+		}
+	} else if (operation == UINavigationControllerOperationPop) {
+		return nil;
+	} else {
+		return nil;
+	}
+}
+	return nil;
+
+}
+
 
 /**
  *	fix for #877, #878

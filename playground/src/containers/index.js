@@ -6,8 +6,12 @@ const LifecycleScreen = require('./LifecycleScreen');
 const ModalScreen = require('./ModalScreen');
 const OptionsScreen = require('./OptionsScreen');
 const ScrollViewScreen = require('./ScrollViewScreen');
+const CustomTransitionOrigin = require('./CustomTransitionOrigin');
+const CustomTransitionDestination = require('./CustomTransitionDestination');
 
 function registerContainers() {
+  Navigation.registerContainer(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
+  Navigation.registerContainer(`navigation.playground.CustomTransitionOrigin`, () => CustomTransitionOrigin);
   Navigation.registerContainer(`navigation.playground.ScrollViewScreen`, () => ScrollViewScreen);
   Navigation.registerContainer(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
   Navigation.registerContainer(`navigation.playground.ModalScreen`, () => ModalScreen);

@@ -45,7 +45,8 @@
     "react-native": "*"
   },
   "dependencies": {
-    "lodash": "4.x.x"
+    "lodash": "4.x.x",
+    "prop-types": "^15.5.10"
   },
   "devDependencies": {
     "xo": "0.18.x",

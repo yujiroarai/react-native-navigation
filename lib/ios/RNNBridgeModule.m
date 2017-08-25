@@ -3,7 +3,7 @@
 @implementation RNNBridgeModule {
 	RNNCommandsHandler* _commandsHandler;
 }
-
+@synthesize bridge = _bridge;
 RCT_EXPORT_MODULE();
 
 - (dispatch_queue_t)methodQueue {
@@ -27,7 +27,7 @@ RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)optio
 }
 
 RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout) {
-	[_commandsHandler push:containerId layout:layout];
+	[_commandsHandler push:containerId layout:layout bridge:self.bridge];
 }
 
 RCT_EXPORT_METHOD(pop:(NSString*)containerId) {

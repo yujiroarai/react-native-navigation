@@ -22,6 +22,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSNumber* topBarTransparent;
 @property (nonatomic) int topBarTransparentTag;
 @property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
+@property (nonatomic, strong) NSNumber* customTransition;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;

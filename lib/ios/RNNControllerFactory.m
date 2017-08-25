@@ -5,6 +5,7 @@
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
 #import "RNNNavigationOptions.h"
+#import "RNNNavigationController.h"
 
 
 @implementation RNNControllerFactory {

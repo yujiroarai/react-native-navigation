@@ -46,11 +46,11 @@
 	}
 }
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout {
+-(void) push:(NSString*)containerId layout:(NSDictionary*)layout bridge:(RCTBridge*)bridge {
 	[self assertReady];
 	
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_navigationStackManager push:newVc onTop:containerId];
+	[_navigationStackManager push:newVc onTop:containerId bridge:bridge];
 }
 
 -(void) pop:(NSString*)containerId {

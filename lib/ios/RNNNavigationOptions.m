@@ -25,7 +25,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
 	self.topBarTransparent = [navigationOptions objectForKey:@"topBarTransparent"];
-	
+	self.customTransition = [navigationOptions objectForKey:@"customTransition"];
 	return self;
 }
 

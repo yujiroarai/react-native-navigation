@@ -6,8 +6,7 @@
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 
-@interface RNNRootViewController : UIViewController
-
+@interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 
 -(instancetype)initWithName:(NSString*)name

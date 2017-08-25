@@ -12,7 +12,7 @@
 
 -(void) setOptions:(NSString*)containerId options:(NSDictionary*)options;
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout;
+-(void) push:(NSString*)containerId layout:(NSDictionary*)layout bridge:(RCTBridge*)bridge;
 
 -(void) pop:(NSString*)containerId;
 
