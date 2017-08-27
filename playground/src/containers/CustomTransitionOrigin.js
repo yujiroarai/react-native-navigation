@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button, Image, TouchableOpacity } = require('react-native');
+const { View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback } = require('react-native');
 
 const Navigation = require('react-native-navigation');
 const CustomTransitionDestination = require('./CustomTransitionDestination')
@@ -33,8 +33,8 @@ class CustomTransitionOrigin extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
         <Navigation.SharedElement tag={5432333}>
-        <TouchableOpacity style={styles.gyroImage} onPress={this.onClickNavigationIcon}>
-        <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
+        <TouchableOpacity activeOpacity={1} style={styles.gyroImage} onPress={this.onClickNavigationIcon}>
+        <Text style={{backgroundColor: 'green'}}>{"Hello!!!!"} </Text>
         </TouchableOpacity>
         </Navigation.SharedElement>
       </View>

@@ -21,9 +21,7 @@ class CustomTransitionDestination extends Component {
     return (
       <View style={styles.root}>
         <Navigation.SharedElement tag={5432335}>
-          <TouchableOpacity style={styles.gyroImage} onPress={() => console.log(1)}>
-          <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
-          </TouchableOpacity>
+          <Text>{"Hello!!!!"} </Text>
         </Navigation.SharedElement>
         <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
       </View>
