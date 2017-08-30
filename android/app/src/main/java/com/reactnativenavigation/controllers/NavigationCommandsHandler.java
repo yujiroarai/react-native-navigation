@@ -62,6 +62,22 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void pushAndReplace(Bundle screenParams) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        final ScreenParams params = ScreenParamsParser.parse(screenParams);
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.pushAndReplace(params);
+            }
+        });
+    }
+
+
     public static void pop(Bundle screenParams) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {

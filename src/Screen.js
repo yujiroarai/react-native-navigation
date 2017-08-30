@@ -12,7 +12,8 @@ const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
   pop: platformSpecific.navigatorPop,
   popToRoot: platformSpecific.navigatorPopToRoot,
-  resetTo: platformSpecific.navigatorResetTo
+  resetTo: platformSpecific.navigatorResetTo,
+  pushAndReplace: platformSpecific.navigatorPushAndReplace
 };
 
 class Navigator {
@@ -26,6 +27,10 @@ class Navigator {
 
   push(params = {}) {
     return NavigationSpecific.push(this, params);
+  }
+
+  pushAndReplace(params = {}) {
+    return NavigationSpecific.pushAndReplace(this, params);
   }
 
   pop(params = {}) {

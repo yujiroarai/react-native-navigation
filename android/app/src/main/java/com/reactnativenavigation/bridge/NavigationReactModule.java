@@ -180,6 +180,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void pushAndReplace(final ReadableMap params) {
+        NavigationCommandsHandler.pushAndReplace(BundleConverter.toBundle(params));
+    }
+
+    @ReactMethod
     public void pop(final ReadableMap params) {
         NavigationCommandsHandler.pop(BundleConverter.toBundle(params));
     }

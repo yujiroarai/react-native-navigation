@@ -15,6 +15,11 @@ function push(screenParams) {
   NativeReactModule.push(screenParams);
 }
 
+function pushAndReplace(screenParams) {
+  savePassProps(screenParams);
+  NativeReactModule.pushAndReplace(screenParams);
+}
+
 function pop(screenParams) {
   NativeReactModule.pop(screenParams);
 }
@@ -192,6 +197,7 @@ async function getCurrentlyVisibleScreenId() {
 module.exports = {
   startApp,
   push,
+  pushAndReplace,
   pop,
   popToRoot,
   newStack,

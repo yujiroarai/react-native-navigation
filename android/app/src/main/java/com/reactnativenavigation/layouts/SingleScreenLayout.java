@@ -145,6 +145,12 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public void pushAndReplace(ScreenParams params) {
+        stack.pushAndReplace(screenParams, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        EventBus.instance.post(new ScreenChangedEvent(params));
+    }
+
+    @Override
     public void pop(ScreenParams params) {
         stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override

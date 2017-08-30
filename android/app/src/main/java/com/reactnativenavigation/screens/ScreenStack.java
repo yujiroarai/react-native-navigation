@@ -97,6 +97,36 @@ public class ScreenStack {
         addScreen(initialScreen, params);
     }
 
+    public void pushAndReplace(ScreenParams params, LayoutParams layoutParams) {
+        Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
+        final Screen previousScreen = stack.peek();
+        if (isStackVisible) {
+            if (nextScreen.screenParams.sharedElementsTransitions.isEmpty()) {
+                pushAndReplaceScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+            } else {
+                pushScreenToVisibleStackWithSharedElementTransition(layoutParams, nextScreen, previousScreen);
+            }
+        } else {
+            pushAndReplaceScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
+        }
+    }
+
+    private void pushAndReplaceScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {
+        stack.pop();
+        pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
+        previousScreen.unmountReactView();
+    }
+
+    private void pushAndReplaceScreenToVisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {
+        pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                Screen toRemove = stack.remove(stack.size() - 2);
+                toRemove.unmountReactView();
+            }
+        });
+    }
+
     public void push(final ScreenParams params, LayoutParams layoutParams) {
         Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
         final Screen previousScreen = stack.peek();
@@ -111,8 +141,7 @@ public class ScreenStack {
         }
     }
 
-    private void pushScreenToVisibleStack(LayoutParams layoutParams, final Screen nextScreen,
-                                          final Screen previousScreen) {
+    private void pushScreenToVisibleStack(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
         pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, null);
     }
 
