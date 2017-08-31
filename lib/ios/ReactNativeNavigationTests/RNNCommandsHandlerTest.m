@@ -30,9 +30,9 @@
 		__strong id uut = self.uut;
 		SEL s = NSSelectorFromString(methodName);
 		IMP imp = [uut methodForSelector:s];
-		void (*func)(id, SEL) = (void *)imp;
+		void (*func)(id, SEL, id, id, id) = (void *)imp;
 		
-		XCTAssertThrowsSpecificNamed(func(uut,s), NSException, @"BridgeNotLoadedError");
+		XCTAssertThrowsSpecificNamed(func(uut,s, nil, nil, nil), NSException, @"BridgeNotLoadedError");
 	}
 }
 
