@@ -8,7 +8,7 @@
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic, strong) RNNAnimationController* animator;
+
 
 
 @end
@@ -61,20 +61,22 @@
 	[self.eventEmitter sendContainerDidDisappear:self.containerId];
 }
 
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
+	if (![vc.navigationOptions.backButtonTransition isEqualToString:@"custom"]){
+		navigationController.delegate = nil;
+	}
+}
+
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
 								  animationControllerForOperation:(UINavigationControllerOperation)operation
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 {
 	if (operation == UINavigationControllerOperationPush) {
-		if (self.navigationOptions.customTransition) {
-			
-			return self.animator;
-		}	else {
-			return nil;
-		}
+		return self.animator;
 	} else if (operation == UINavigationControllerOperationPop) {
-		return nil;
+		return self.animator;
 	} else {
 		return nil;
 	}
@@ -82,6 +84,10 @@
 	return nil;
 
 }
+//- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
+//						 interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {
+//	return self.interactiveAnimator;
+//}
 
 
 /**

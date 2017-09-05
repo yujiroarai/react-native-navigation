@@ -7,33 +7,105 @@
 //
 
 #import "RNNAnimationController.h"
-
-@protocol ImageTransitionProtocol
-
--(void)transitionSetup;
--(void)transitionCleanup;
--(CGRect)imageWindowFrame;
-
-@end
+#import "RNNSharedElementView.h"
+#import "RNNInteractivePopController.h"
 
 @interface  RNNAnimationController()
+@property (nonatomic, strong)NSArray* transitions;
+@property (nonatomic)double duration;
+@property (nonatomic)double springDamping;
+@property (nonatomic, strong) RNNInteractivePopController* interactivePopController;
 
-@property (nonatomic, strong)UIImage* image;
-@property (nonatomic, strong)id<ImageTransitionProtocol> fromDelegate;
-@property (nonatomic, strong)id<ImageTransitionProtocol> toDelegate;
 @end
 
 @implementation RNNAnimationController
 
--(void)setupImageTransition:(UIImage*)image andFromDelegate:(id<ImageTransitionProtocol>)fromDelegate andtoDelegate:(id<ImageTransitionProtocol>)toDelegate {
-	self.image = image;
-	self.fromDelegate = fromDelegate;
-	self.toDelegate = toDelegate;
+-(void)setupTransition:(NSDictionary*)data{
+	if ([data objectForKey:@"transitions"]) {
+		self.transitions= [data objectForKey:@"transitions"];
+	} else {
+		[[NSException exceptionWithName:NSInvalidArgumentException reason:@"No transitions" userInfo:nil] raise];
+	}
+	if ([data objectForKey:@"duration"]) {
+		self.duration = [[data objectForKey:@"duration"] doubleValue];
+	} else {
+		self.duration = 0.7;
+	}
+	if ([data objectForKey:@"springDamping"]) {
+		self.springDamping = [[data objectForKey:@"springDamping"] doubleValue];
+	} else {
+		self.springDamping = 0.85;
+	}
 }
+
+-(NSArray*)findRNNSharedElementViews:(UIView*)view{
+	NSMutableArray* sharedElementViews = [NSMutableArray new];
+	for(UIView *aView in view.subviews){
+		if([aView isMemberOfClass:[RNNSharedElementView class]]){
+			[sharedElementViews addObject:aView];
+		} else{
+			if ([aView subviews]) {
+				[sharedElementViews addObjectsFromArray:[self findRNNSharedElementViews:aView]];
+			}
+		}
+	}
+	return sharedElementViews;
+}
+
+-(RNNSharedElementView*)findViewToShare:(NSArray*)RNNSharedElementViews withId:(NSString*)elementId{
+	for (RNNSharedElementView* sharedView in RNNSharedElementViews) {
+		if ([sharedView.elementId isEqualToString:elementId]){
+			return sharedView;
+		}
+	}
+	[[NSException exceptionWithName:NSInvalidArgumentException reason:@"elementId does not exist" userInfo:nil] raise];
+	return nil;
+}
+
+-(NSArray*)prepareSharedElementTransition:(NSArray*)RNNSharedElementViews
+			withContainerView:(UIView*)containerView
+{
+	NSMutableArray* sharedElementsData = [NSMutableArray new];
+	for (NSDictionary* transition in self.transitions) {
+		if ([transition[@"type"] isEqualToString:@"sharedElement"]){
+			RNNSharedElementView* fromElement = [self findViewToShare:RNNSharedElementViews withId:transition[@"fromId"]];
+			RNNSharedElementView* toElement = [self findViewToShare:RNNSharedElementViews withId:transition[@"toId"]];
+			CGRect originFrame = [self frameFromSuperView:[fromElement subviews][0]];
+			UIView* animationView = [[fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+			animationView.contentMode = UIViewContentModeScaleAspectFit;
+			animationView.frame = originFrame;
+			animationView.clipsToBounds = true;
+			[containerView  addSubview:animationView];
+			[fromElement setHidden: YES];
+			[toElement setHidden: YES];
+			[containerView bringSubviewToFront:animationView];
+			CGRect toFrame = [self frameFromSuperView:[toElement subviews][0]];
+			NSNumber* interactivePop = @(0);
+			if ([transition objectForKey:@"interactivePop"]) {
+				interactivePop = [transition objectForKey:@"interactivePop"];
+			} 
+			NSDictionary* sharedElementData = @{@"animationView" : animationView ,
+												@"toFrame" : [NSValue valueWithCGRect:toFrame],
+												@"fromView" : fromElement,
+												@"toView" : toElement,
+												@"interactivePop": interactivePop};
+			[sharedElementsData addObject:sharedElementData];
+		}
+	}
+    return sharedElementsData;
+}
+
+-(CGRect)frameFromSuperView:(UIView*)view{
+	CGPoint sharedViewFrameOrigin = [view.superview convertPoint:view.frame.origin toView:nil];
+	CGRect originRect = CGRectMake(sharedViewFrameOrigin.x, sharedViewFrameOrigin.y, view.frame.size.width, view.frame.size.height);
+	return originRect;
+}
+
+
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-	return 1;
+	return self.duration;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -41,69 +113,55 @@
 	
 	UIViewController* toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 	UIViewController* fromVC  = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-//	UIImage* testImage = [[[fromVC.view viewWithTag:5432333] subviews][0] subviews][0];
-//	self setupImageTransition:fromVC andFromDelegate:<#(id<ImageTransitionProtocol>)#> andtoDelegate:<#(id<ImageTransitionProtocol>)#>
-//	self.image = [[[[fromVC.view viewWithTag:5432333] subviews][0] subviews][0] image];
-	NSLog(@"*******************^&^&^&^ %@",[[[fromVC.view viewWithTag:5432333] subviews][0] subviews][0]);
-	NSLog(@"*******************^&^&^&^ %@",[toVC.view viewWithTag:5432335]);
-
 	UIView* containerView = [transitionContext containerView];
+	
 	toVC.view.frame = fromVC.view.frame;
 	//create transition image
-	UIView* animationView = [[UIView alloc] init];
-	UIView* content = [[[fromVC.view viewWithTag:5432333]subviews][0] snapshotViewAfterScreenUpdates:YES];
-	[animationView addSubview:content];
-	animationView.contentMode = UIViewContentModeScaleAspectFit;
-	animationView.frame = [fromVC.view viewWithTag:5432333].frame;
-	animationView.clipsToBounds = true;
-	NSLog(@"*******************^&^&^&^ %@",animationView);
-//	UIImageView* imageView = [[UIImageView alloc] initWithImage:self.image];
-//	imageView.contentMode = UIViewContentModeScaleAspectFit;
-////	imageView.frame = (self.fromDelegate == nil) ? CGRectMake(0, 0, 0, 0) : [self.fromDelegate imageWindowFrame];
-//	imageView.frame = [fromVC.view viewWithTag:5432333].frame;
-//	imageView.clipsToBounds = true;
-//	[containerView  addSubview:imageView];
-	[containerView  addSubview:animationView];
-	// 5: Create from screen snapshot
 	UIView* fromSnapshot = [fromVC.view snapshotViewAfterScreenUpdates:true];
 	fromSnapshot.frame = fromVC.view.frame;
 	[containerView addSubview:fromSnapshot];
-//	[self.fromDelegate transitionSetup];
-	[[toVC.view viewWithTag:5432335] setHidden:YES];
-	[[fromVC.view viewWithTag:5432333] setHidden: YES];
-//	[self.toDelegate transitionSetup];
+	
+	
 	// 6: Create to screen snapshot
 	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];
 	toSnapshot.frame = fromVC.view.frame;
 	[containerView addSubview:toSnapshot];
 	toSnapshot.alpha = 0;
-	
-	// 7: Bring the image view to the front and get the final frame
-//	[containerView bringSubviewToFront:imageView];
-	[containerView bringSubviewToFront:animationView];
-//	CGRect toFrame = (self.toDelegate == nil) ? CGRectMake(0, 0, 0, 0) : [self.toDelegate imageWindowFrame];
-	CGRect toFrame = [toVC.view viewWithTag:5432335].frame;
-	
-	
-	[UIView animateWithDuration:[self transitionDuration:transitionContext ] delay:0 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+    NSArray* fromRNNSharedElementViews = [self findRNNSharedElementViews:fromVC.view];
+	NSArray* toRNNSharedElementViews = [self findRNNSharedElementViews:toVC.view];
+	NSArray* RNNSharedElementViews = [toRNNSharedElementViews arrayByAddingObjectsFromArray:fromRNNSharedElementViews];
+	NSArray* viewsToAnimate = [self prepareSharedElementTransition:RNNSharedElementViews withContainerView:containerView];
+
+	[UIView animateWithDuration:[self transitionDuration:transitionContext ] delay:0 usingSpringWithDamping:self.springDamping initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 		toSnapshot.alpha = 1;
-//		imageView.frame = toFrame;
-		animationView.frame = toFrame;
+		for (NSMutableDictionary* viewData in viewsToAnimate ) {
+			UIView* animtedView = viewData[@"animationView"];
+			animtedView.frame = [viewData[@"toFrame"] CGRectValue];
+		}
 	} completion:^(BOOL finished) {
 		// 9: Remove transition views
-//		[self.toDelegate transitionCleanup	];
-//		[self.fromDelegate transitionCleanup];
-		[[toVC.view viewWithTag:5432335] setHidden:NO];
-		[[fromVC.view viewWithTag:5432333] setHidden: NO];
-//		[imageView removeFromSuperview];
-		[animationView removeFromSuperview];
+		for (NSMutableDictionary* viewData in viewsToAnimate ) {
+			[viewData[@"fromView"] setHidden:NO];
+			[viewData[@"toView"] setHidden:NO];
+			UIView* animtedView = viewData[@"animationView"];
+			[animtedView removeFromSuperview];
+			//pass ViewController to interactivePopElement
+			if ([viewData[@"interactivePop"] boolValue]) {
+				
+				self.interactivePopController = [[RNNInteractivePopController alloc] initWithTopView:viewData[@"toView"] andBottomView:viewData[@"fromView"] andViewController:toVC];
+					UIPanGestureRecognizer* gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.interactivePopController
+																							  action:@selector(handleGesture:)];
+					[viewData[@"toView"] addGestureRecognizer:gesture];
+				
+			}
+		}
 		[fromSnapshot removeFromSuperview];
 		[toSnapshot removeFromSuperview];
 		
 		// 10: Complete transition
 		if (![transitionContext transitionWasCancelled]) {
 			[containerView addSubview: toVC.view];
-		[transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+			[transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 		}
 	}];
 }

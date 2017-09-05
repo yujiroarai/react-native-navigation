@@ -1,23 +1,32 @@
 
 #import <React/RCTViewManager.h>
 #import "RNNSharedElement.h"
-
+#import "RNNSharedElementView.h"
 @interface RNNSharedElement()
 
 
 @end
 @implementation RNNSharedElement
 
-RCT_EXPORT_MODULE();
 
-RCT_CUSTOM_VIEW_PROPERTY(tag, NSNumber, RNNSharedElement)
+RCT_CUSTOM_VIEW_PROPERTY(elementId, NSString, RNNSharedElement)
 {
-	[view setValue:json forKeyPath:@"tag"];
+	[(RNNSharedElementView*)view setElementId:json];
+}
+RCT_CUSTOM_VIEW_PROPERTY(type, NSString, RNNSharedElement)
+{
+	[(RNNSharedElementView*)view setType:json];
+}
+RCT_CUSTOM_VIEW_PROPERTY(interactive, NSNumber, RNNSharedElement)
+{
+	[(RNNSharedElementView*)view setInteractive:json];
 }
 
-- (UIView *)view
+RCT_EXPORT_MODULE();
+
+- (RNNSharedElementView *)view
 {
-	UIView* sharedElement = [[UIView alloc] init];
+	RNNSharedElementView* sharedElement = [[RNNSharedElementView alloc] init];
 	return sharedElement;
 }
 

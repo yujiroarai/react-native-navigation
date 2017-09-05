@@ -18,41 +18,48 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 }
 
 -(void)pushAfterLoad:(NSDictionary*)notif {
-	[self.toVC view];
-//	[self.fromVC navigationController] will
-	RCTShadowView* Moshe = [[RCTShadowView alloc] init];
-	NSMutableSet<RCTShadowView *> *viewsWithNewFrame = [NSMutableSet set];
-	[Moshe applyLayoutNode:Moshe.yogaNode viewsWithNewFrame:viewsWithNewFrame absolutePosition:CGPointZero];
-	
-	
-	NSLog(@"*******************^&^&^&^ %@",viewsWithNewFrame);
-	[[self.fromVC navigationController] pushViewController:self.toVC animated:YES];
-	NSLog(@"*******************^&^&^&^ %@",[self.fromVC.view viewWithTag:5432333]);
-	NSLog(@"*******************^&^&^&^ %@",[self.toVC.view viewWithTag:5432335]);
-	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
+	[[self.fromVC navigationController] pushViewController:self.toVC animated:YES];
+	self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
 }
 
--(void)push:(UIViewController *)newTop onTop:(NSString *)containerId bridge:(RCTBridge*)bridge {
+-(void)customPush:(UIViewController *)newTop onTop:(NSString *)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge {
 	UIViewController *vc = [_store findContainerForId:containerId];
-	self.fromVC = vc;
 	RNNRootViewController* newTopRootView = (RNNRootViewController*)newTop;
+	self.fromVC = vc;
 	self.toVC = newTopRootView;
 	vc.navigationController.delegate = newTopRootView;
-	vc.navigationController.interactivePopGestureRecognizer.delegate = nil;
-	if (newTopRootView.navigationOptions.customTransition) {
-		RCTUIManager *uiManager = bridge.uiManager;
-//		NSDictionary *props = @{@"name": @"Daniel", @"greeting": @"Hello World"};
-//		__unused RCCSyncRootView *rootView = [[RCCSyncRootView alloc] initWithBridge:bridge moduleName:@"SyncExample" initialProperties:props];
-		[uiManager setAvailableSize:CGSizeMake(375, 667) forRootView:self.toVC.view];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(pushAfterLoad:)
-													 name: @"RCTContentDidAppearNotification"
-												   object:nil];
+//	[newTopRootView.interactiveAnimator wireToViewController:(UIViewController*)vc withCustomAnimationData:(NSDictionary*)customAnimationData];
+	[newTopRootView.animator setupTransition:customAnimationData];
+	RCTUIManager *uiManager = bridge.uiManager;
+	CGRect screenBound = [[UIScreen mainScreen] bounds];
+	CGSize screenSize = screenBound.size;
+	[uiManager setAvailableSize:screenSize forRootView:self.toVC.view];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(pushAfterLoad:)
+												 name: @"RCTContentDidAppearNotification"
+											   object:nil];
+}
+
+-(void)push:(UIViewController *)newTop onTop:(NSString *)containerId {
+	UIViewController *vc = [_store findContainerForId:containerId];
+	[[vc navigationController] pushViewController:newTop animated:YES];
+}
+
+-(void)customPop:(NSString *)containerId withAnimationData:(NSDictionary *)animationData{
+	UIViewController* vc = [_store findContainerForId:containerId];
+	UINavigationController* nvc = [vc navigationController];
+	if ([nvc topViewController] == vc) {
+		RNNRootViewController* RNNVC = (RNNRootViewController*)vc;
+		nvc.delegate = RNNVC;
+		[RNNVC.animator setupTransition:animationData];
+		[nvc popViewControllerAnimated:YES];
 	} else {
-		[[vc navigationController] pushViewController:newTop animated:YES];
+		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
+		[vcs removeObject:vc];
+		[nvc setViewControllers:vcs animated:YES];
 	}
-	
+	[_store removeContainer:containerId];
 }
 
 -(void)pop:(NSString *)containerId {

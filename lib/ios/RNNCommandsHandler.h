@@ -14,7 +14,7 @@
 
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout bridge:(RCTBridge*)bridge;
 
--(void) pop:(NSString*)containerId;
+-(void) pop:(NSString*)containerId options:(NSDictionary*)options;
 
 -(void) popTo:(NSString*)containerId;
 
