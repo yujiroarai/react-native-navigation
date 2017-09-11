@@ -6,7 +6,6 @@
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 #import "RNNAnimationController.h"
-#import "RNNInteractiveAnimationController.h"
 @interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 @property (nonatomic, strong) RNNAnimationController* animator;

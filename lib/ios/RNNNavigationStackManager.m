@@ -1,7 +1,5 @@
 #import "RNNNavigationStackManager.h"
 #import "RNNRootViewController.h"
-#import "RCCSyncRootView.h"
-#import "React/RCTShadowView.h"
 #import "React/RCTUIManager.h"
 #import "RNNAnimationController.h"
 
@@ -29,7 +27,6 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = vc;
 	self.toVC = newTopRootView;
 	vc.navigationController.delegate = newTopRootView;
-//	[newTopRootView.interactiveAnimator wireToViewController:(UIViewController*)vc withCustomAnimationData:(NSDictionary*)customAnimationData];
 	[newTopRootView.animator setupTransition:customAnimationData];
 	RCTUIManager *uiManager = bridge.uiManager;
 	CGRect screenBound = [[UIScreen mainScreen] bounds];

@@ -1,11 +1,3 @@
-//
-//  RNNSharedElementView.h
-//  ReactNativeNavigation
-//
-//  Created by Elad Bogomolny on 29/08/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @interface RNNSharedElementView : UIView
