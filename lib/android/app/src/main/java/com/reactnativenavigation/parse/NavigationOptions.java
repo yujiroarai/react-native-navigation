@@ -14,19 +14,19 @@ public class NavigationOptions {
 
 		result.title = json.optString("title");
 		result.topBarBackgroundColor = json.optInt("topBarBackgroundColor");
-    result.topBarTextColor = json.optInt("topBarTextColor");
+		result.topBarTextColor = json.optInt("topBarTextColor");
 
 		return result;
 	}
 
 	public String title = "";
 	public int topBarBackgroundColor = 0;
-  @ColorInt
-  public int topBarTextColor;
+	@ColorInt
+	public int topBarTextColor;
 
 	public void mergeWith(final NavigationOptions other) {
 		title = other.title;
 		topBarBackgroundColor = other.topBarBackgroundColor;
-    topBarTextColor = other.topBarTextColor;
+		topBarTextColor = other.topBarTextColor;
 	}
 }
