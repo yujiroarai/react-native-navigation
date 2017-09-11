@@ -134,32 +134,32 @@ public class ContainerViewControllerTest extends BaseTest {
 
 	@Test
 	public void appliesTopBarTextColor() throws Exception {
-	  assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-	  initialNavigationOptions.title = "the title";
-	  StackController stackController = new StackController(activity, "stackId");
-	  stackController.push(uut);
-	  uut.onViewAppeared();
-	  assertThat(getTitleTextView(stackController.getTopBar().getToolbar()).getCurrentTextColor()).isNotEqualTo(Color.RED);
+		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+		initialNavigationOptions.title = "the title";
+		StackController stackController = new StackController(activity, "stackId");
+		stackController.push(uut);
+		uut.onViewAppeared();
+		assertThat(getTitleTextView(stackController.getTopBar().getToolbar()).getCurrentTextColor()).isNotEqualTo(Color.RED);
 
-	  NavigationOptions opts = new NavigationOptions();
-	  opts.topBarTextColor = Color.RED;
-	  uut.mergeNavigationOptions(opts);
+		NavigationOptions opts = new NavigationOptions();
+		opts.topBarTextColor = Color.RED;
+		uut.mergeNavigationOptions(opts);
 
-	  assertThat(getTitleTextView(stackController.getTopBar().getToolbar()).getCurrentTextColor()).isEqualTo(Color.RED);
+		assertThat(getTitleTextView(stackController.getTopBar().getToolbar()).getCurrentTextColor()).isEqualTo(Color.RED);
 	}
 
-  private TextView getTitleTextView(Toolbar toolbar) {
-      try {
-          Class<?> toolbarClass = Toolbar.class;
-          Field titleTextViewField = toolbarClass.getDeclaredField("mTitleTextView");
-          titleTextViewField.setAccessible(true);
+	private TextView getTitleTextView(Toolbar toolbar) {
+		try {
+			Class<?> toolbarClass = Toolbar.class;
+			Field titleTextViewField = toolbarClass.getDeclaredField("mTitleTextView");
+			titleTextViewField.setAccessible(true);
 
-          return (TextView) titleTextViewField.get(toolbar);
-      } catch (NoSuchFieldException e) {
-          System.out.print("no such file");
-      } catch (IllegalAccessException e) {
-          System.out.print("illegal access");
-      }
-      return null;
-  }
+			return (TextView) titleTextViewField.get(toolbar);
+		} catch (NoSuchFieldException e) {
+			System.out.print("no such file");
+		} catch (IllegalAccessException e) {
+			System.out.print("illegal access");
+		}
+		return null;
+	}
 }
