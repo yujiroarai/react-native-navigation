@@ -3,12 +3,17 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestContainerView;
 import com.reactnativenavigation.parse.NavigationOptions;
 
 import org.junit.Test;
+
+import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;

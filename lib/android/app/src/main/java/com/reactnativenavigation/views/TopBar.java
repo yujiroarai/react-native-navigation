@@ -3,6 +3,7 @@ package com.reactnativenavigation.views;
 import android.app.Activity;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.support.annotation.ColorInt;
 
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
