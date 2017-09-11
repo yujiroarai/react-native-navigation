@@ -7,26 +7,26 @@ import org.json.JSONObject;
 
 public class NavigationOptions {
 
-    @NonNull
-    public static NavigationOptions parse(JSONObject json) {
-        NavigationOptions result = new NavigationOptions();
-        if (json == null) return result;
+	@NonNull
+	public static NavigationOptions parse(JSONObject json) {
+		NavigationOptions result = new NavigationOptions();
+		if (json == null) return result;
 
-        result.title = json.optString("title");
-        result.topBarBackgroundColor = json.optInt("topBarBackgroundColor");
-        result.topBarTextColor = json.optInt("topBarTextColor");
+		result.title = json.optString("title");
+		result.topBarBackgroundColor = json.optInt("topBarBackgroundColor");
+    result.topBarTextColor = json.optInt("topBarTextColor");
 
-        return result;
-    }
+		return result;
+	}
 
-    public String title = "";
-    public int topBarBackgroundColor = 0;
-    @ColorInt
-    public int topBarTextColor;
+	public String title = "";
+	public int topBarBackgroundColor = 0;
+  @ColorInt
+  public int topBarTextColor;
 
-    public void mergeWith(final NavigationOptions other) {
-        title = other.title;
-        topBarBackgroundColor = other.topBarBackgroundColor;
-        topBarTextColor = other.topBarTextColor;
-    }
+	public void mergeWith(final NavigationOptions other) {
+		title = other.title;
+		topBarBackgroundColor = other.topBarBackgroundColor;
+    topBarTextColor = other.topBarTextColor;
+	}
 }
