@@ -30,6 +30,13 @@ public class TopBar extends AppBarLayout {
 		titleBar.setTitleTextColor(color);
 	}
 
+	public void setTitleFontSize(float size) {
+		TextView titleTextView = getTitleTextView();
+		if (titleTextView != null) {
+			titleTextView.setTextSize(size);
+		}
+	}
+
 	public Toolbar getToolbar() {
 		return titleBar;
 	}

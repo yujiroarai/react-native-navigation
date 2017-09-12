@@ -15,7 +15,7 @@ public class NavigationOptions {
 		result.title = json.optString("title");
 		result.topBarBackgroundColor = json.optInt("topBarBackgroundColor");
 		result.topBarTextColor = json.optInt("topBarTextColor");
-		result.topBarTextFontSize = json.optInt("topBarTextFontSize");
+		result.topBarTextFontSize = (float) json.optDouble("topBarTextFontSize");
 
 		return result;
 	}
@@ -24,7 +24,7 @@ public class NavigationOptions {
 	public int topBarBackgroundColor = 0;
 	@ColorInt
 	public int topBarTextColor;
-	public int topBarTextFontSize;
+	public float topBarTextFontSize;
 
 	public void mergeWith(final NavigationOptions other) {
 		title = other.title;
