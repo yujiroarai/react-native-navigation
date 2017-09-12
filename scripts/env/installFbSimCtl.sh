@@ -1,4 +1,5 @@
 #!/bin/bash -e
 
 brew tap facebook/fb
-brew install fbsimctl
+export CODE_SIGNING_REQUIRED=NO
+brew install fbsimctl --HEAD
