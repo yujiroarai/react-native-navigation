@@ -84,10 +84,7 @@
 	return nil;
 
 }
-//- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
-//						 interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {
-//	return self.interactiveAnimator;
-//}
+
 
 
 /**

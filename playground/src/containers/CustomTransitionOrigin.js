@@ -1,20 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
-
 const { View, Text, Button, Image, TouchableOpacity } = require('react-native');
-
 const Navigation = require('react-native-navigation');
-const CustomTransitionDestination = require('./CustomTransitionDestination')
-
-// let testCompon = new CustomTransitionDestination()
-// class SyncExample extends Component {
-//   render() {
-//     return (
-//      testCompon.render()
-//     );
-//   }
-// }
-// Navigation.SyncRegistry.registerComponent('SyncExample', () => SyncExample, ['name', 'greeting']);
 
 class CustomTransitionOrigin extends Component {
   constructor(props) {
@@ -30,26 +17,39 @@ class CustomTransitionOrigin extends Component {
     return (
       <View style={styles.root}>
         <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
-        <TouchableOpacity activeOpacity={0.5} style={styles.gyroImage} onPress={this.onClickNavigationIcon}>
-          <View>
-              <Navigation.SharedElement elementId={"5432333"}>
+
+          <View style={{flex: 1, justifyContent: 'flex-start'}}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image1')}> 
+              <Navigation.SharedElement type={"image"} elementId={"image1"}>
+                <Image resizeMode={"contain"} style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
+              </Navigation.SharedElement>
+            </TouchableOpacity> 
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image2')}> 
+              <Navigation.SharedElement type={"image"} elementId={"image2"}>
                 <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
               </Navigation.SharedElement>
-              <Navigation.SharedElement elementId={"5432332"}>
-                  <Text style={{height: 50, width: 100, backgroundColor:'red'}}>{'HELLOOOOOO'}</Text>
-              </Navigation.SharedElement> 
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image3')}> 
+              <Navigation.SharedElement type={"image"} elementId={"image3"}>
+                <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
+              </Navigation.SharedElement>
+            </TouchableOpacity> 
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image4')}> 
+              <Navigation.SharedElement type={"image"} elementId={"image4"}>
+                <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />  
+              </Navigation.SharedElement>
+            </TouchableOpacity>  
           </View>
-        </TouchableOpacity>
+        
        
       </View>
     );
   }
-  onClickNavigationIcon() {
+  onClickNavigationIcon(elementId) {
       Navigation.push( this.props.containerId, {
           name: 'navigation.playground.CustomTransitionDestination',
           transition: {
-            transitions: [{type:"sharedElement", fromId: "5432333", toId: "5432335", interactivePop: true},
-                          {type:"sharedElement", fromId: "5432332", toId: "5432336"}],
+            transitions: [{type:"sharedElement", fromId: elementId, toId: "customDestinationImagee", interactiveImagePop: true}],
             duration: 0.4
           }
       });
@@ -59,11 +59,12 @@ module.exports = CustomTransitionOrigin;
 
 const styles = {
   root: {
-    flexGrow: 1,
     alignItems: 'center',
+    flexGrow: 1,
     backgroundColor: '#f5fcff'
   },
   h1: {
+    
     fontSize: 24,
     textAlign: 'center',
     marginTop: 100
@@ -74,6 +75,7 @@ const styles = {
     marginTop: 10
   },
 gyroImage: {
+    marginTop: 10,
     width: 100,
     height: 100
 }

@@ -4,7 +4,6 @@
 
 @interface RNNAnimationController : NSObject <UIViewControllerAnimatedTransitioning>
 -(void)setupTransition:(NSDictionary*)data;
--(CGRect)frameFromSuperView:(UIView*)view;
 -(NSArray*)findRNNSharedElementViews:(UIView*)view;
 -(RNNSharedElementView*)findViewToShare:(NSArray*)RNNSharedElementViews withId:(NSString*)elementId;
 
