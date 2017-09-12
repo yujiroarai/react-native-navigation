@@ -1,14 +1,13 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
-import android.support.annotation.Size;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
-import android.support.annotation.ColorInt;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.lang.reflect.Field;
 
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
@@ -31,29 +30,24 @@ public class TopBar extends AppBarLayout {
 		titleBar.setTitleTextColor(color);
 	}
 
-	public void setTitleTextSize(int textSize) {
-		TextView titleTextView = getTitleTextView();
-		if (titleTextView != null) {
-			titleTextView.setTextSize(textSize);
-		}
-	}
-
 	public Toolbar getToolbar() {
 		return titleBar;
 	}
 
-	@Nullable
-	private TextView getTitleTextView() {
-		try {
-			Class<?> toolbarClass = Toolbar.class;
-			Field titleTextViewField = toolbarClass.getDeclaredField("mTitleTextView");
-			titleTextViewField.setAccessible(true);
+	public TextView getTitleTextView() {
+		return findTextView(titleBar);
+	}
 
-			return (TextView) titleTextViewField.get(titleBar);
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+	@Nullable
+	public TextView findTextView(ViewGroup root) {
+		for (int i = 0; i < root.getChildCount(); i++) {
+			View view = root.getChildAt(i);
+			if (view instanceof TextView) {
+				return (TextView) view;
+			}
+			if (view instanceof ViewGroup) {
+				return findTextView((ViewGroup) view);
+			}
 		}
 		return null;
 	}

@@ -3,17 +3,12 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.TextView;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestContainerView;
 import com.reactnativenavigation.parse.NavigationOptions;
 
 import org.junit.Test;
-
-import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -139,27 +134,14 @@ public class ContainerViewControllerTest extends BaseTest {
 		StackController stackController = new StackController(activity, "stackId");
 		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(getTitleTextView(stackController.getTopBar().getToolbar()).getCurrentTextColor()).isNotEqualTo(Color.RED);
+		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
 
 		NavigationOptions opts = new NavigationOptions();
+		opts.title = "the title";
 		opts.topBarTextColor = Color.RED;
 		uut.mergeNavigationOptions(opts);
 
-		assertThat(getTitleTextView(stackController.getTopBar().getToolbar()).getCurrentTextColor()).isEqualTo(Color.RED);
-	}
-
-	private TextView getTitleTextView(Toolbar toolbar) {
-		try {
-			Class<?> toolbarClass = Toolbar.class;
-			Field titleTextViewField = toolbarClass.getDeclaredField("mTitleTextView");
-			titleTextViewField.setAccessible(true);
-
-			return (TextView) titleTextViewField.get(toolbar);
-		} catch (NoSuchFieldException e) {
-			System.out.print("no such file");
-		} catch (IllegalAccessException e) {
-			System.out.print("illegal access");
-		}
-		return null;
+		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
 	}
 }
