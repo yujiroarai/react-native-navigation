@@ -37,10 +37,6 @@ public class TopBar extends AppBarLayout {
 		}
 	}
 
-	public Toolbar getToolbar() {
-		return titleBar;
-	}
-
 	public TextView getTitleTextView() {
 		return findTextView(titleBar);
 	}

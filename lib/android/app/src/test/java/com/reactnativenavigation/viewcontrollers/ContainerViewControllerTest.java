@@ -152,7 +152,7 @@ public class ContainerViewControllerTest extends BaseTest {
 		StackController stackController = new StackController(activity, "stackId");
 		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
+		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
 
 		NavigationOptions opts = new NavigationOptions();
 		opts.title = "the title";
