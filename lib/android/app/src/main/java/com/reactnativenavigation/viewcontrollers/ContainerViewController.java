@@ -34,10 +34,10 @@ public class ContainerViewController extends ViewController {
 	private ContainerView containerView;
 
 	public ContainerViewController(final Activity activity,
-								   final String id,
-								   final String containerName,
-								   final ContainerViewCreator viewCreator,
-								   final NavigationOptions initialNavigationOptions) {
+	                               final String id,
+	                               final String containerName,
+	                               final ContainerViewCreator viewCreator,
+	                               final NavigationOptions initialNavigationOptions) {
 		super(activity, id);
 		this.containerName = containerName;
 		this.viewCreator = viewCreator;
