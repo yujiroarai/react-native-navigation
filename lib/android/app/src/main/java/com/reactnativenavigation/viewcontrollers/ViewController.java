@@ -7,13 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.reactnativenavigation.presentation.BasePresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 
-public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutListener {
+public abstract class ViewController<T extends BasePresenter> implements ViewTreeObserver.OnGlobalLayoutListener {
 
 	private final Activity activity;
 	private final String id;
+	protected T presenter;
 
 	private View view;
 	private StackController parentStackController;
@@ -22,7 +24,10 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	public ViewController(Activity activity, String id) {
 		this.activity = activity;
 		this.id = id;
+		presenter = initPresenter();
 	}
+
+	protected abstract T initPresenter();
 
 	@NonNull
 	protected abstract View createView();
@@ -106,5 +111,9 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	protected boolean isViewShown() {
 		return getView().isShown();
+	}
+
+	public T getPresenter() {
+		return presenter;
 	}
 }

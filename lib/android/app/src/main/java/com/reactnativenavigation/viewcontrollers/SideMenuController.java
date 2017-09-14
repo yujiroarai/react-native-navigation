@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.presentation.BasePresenter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,6 +23,12 @@ public class SideMenuController extends ParentController {
 
 	public SideMenuController(final Activity activity, final String id) {
 		super(activity, id);
+	}
+
+	@Override
+	protected BasePresenter initPresenter() {
+		//TODO: implement presenter
+		return null;
 	}
 
 	@NonNull

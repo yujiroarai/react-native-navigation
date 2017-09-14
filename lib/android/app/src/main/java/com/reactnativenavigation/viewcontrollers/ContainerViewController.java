@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.BasePresenter;
+import com.reactnativenavigation.presentation.ContainerViewControllerPresenter;
 
 public class ContainerViewController extends ViewController {
 
@@ -34,10 +36,10 @@ public class ContainerViewController extends ViewController {
 	private ContainerView containerView;
 
 	public ContainerViewController(final Activity activity,
-	                               final String id,
-	                               final String containerName,
-	                               final ContainerViewCreator viewCreator,
-	                               final NavigationOptions initialNavigationOptions) {
+								   final String id,
+								   final String containerName,
+								   final ContainerViewCreator viewCreator,
+								   final NavigationOptions initialNavigationOptions) {
 		super(activity, id);
 		this.containerName = containerName;
 		this.viewCreator = viewCreator;
@@ -55,7 +57,7 @@ public class ContainerViewController extends ViewController {
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		ensureViewIsCreated();
-		applyNavigationOptions();
+		presenter.applyOptions(navigationOptions);
 		containerView.sendContainerStart();
 	}
 
@@ -70,6 +72,11 @@ public class ContainerViewController extends ViewController {
 		return super.isViewShown() && containerView.isReady();
 	}
 
+	@Override
+	protected BasePresenter initPresenter() {
+		return new ContainerViewControllerPresenter(this);
+	}
+
 	@NonNull
 	@Override
 	protected View createView() {
@@ -79,17 +86,14 @@ public class ContainerViewController extends ViewController {
 
 	public void mergeNavigationOptions(final NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		applyNavigationOptions();
+		presenter.applyOptions(navigationOptions);
 	}
 
-	private void applyNavigationOptions() {
-		if (getParentStackController() != null) {
-			getParentStackController().getTopBar().setTitle(navigationOptions.title);
-			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
-			getParentStackController().getTopBar().setTitleTextColor(navigationOptions.topBarTextColor);
-			getParentStackController().getTopBar().setTitleFontSize(navigationOptions.topBarTextFontSize);
-		}
-	}
+//	private void applyNavigationOptions() {
+//		if (getParentStackController() != null) {
+//			getParentStackController().getPresenter().applyOptions(navigationOptions);
+//		}
+//	}
 
 	public NavigationOptions getNavigationOptions() {
 		return navigationOptions;
