@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.presentation.BasePresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 
 import java.util.ArrayList;
@@ -29,12 +28,6 @@ public class BottomTabsController extends ParentController implements BottomNavi
 
 	public BottomTabsController(final Activity activity, final String id) {
 		super(activity, id);
-	}
-
-	@Override
-	protected BasePresenter initPresenter() {
-		//TODO: implement presenter
-		return null;
 	}
 
 	@NonNull

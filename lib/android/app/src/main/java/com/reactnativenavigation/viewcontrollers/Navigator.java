@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.BasePresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 
 import java.util.Collection;
@@ -19,12 +18,6 @@ public class Navigator extends ParentController {
 
 	public Navigator(final Activity activity) {
 		super(activity, "navigator" + CompatUtils.generateViewId());
-	}
-
-	@Override
-	protected BasePresenter initPresenter() {
-		//TODO: implement presenter
-		return null;
 	}
 
 	@NonNull

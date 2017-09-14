@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.BasePresenter;
-import com.reactnativenavigation.presentation.ContainerViewControllerPresenter;
 
 public class ContainerViewController extends ViewController {
 
@@ -57,7 +55,7 @@ public class ContainerViewController extends ViewController {
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		ensureViewIsCreated();
-		presenter.applyOptions(navigationOptions);
+		applyNavigationOptions();
 		containerView.sendContainerStart();
 	}
 
@@ -72,11 +70,6 @@ public class ContainerViewController extends ViewController {
 		return super.isViewShown() && containerView.isReady();
 	}
 
-	@Override
-	protected BasePresenter initPresenter() {
-		return new ContainerViewControllerPresenter(this);
-	}
-
 	@NonNull
 	@Override
 	protected View createView() {
@@ -86,14 +79,17 @@ public class ContainerViewController extends ViewController {
 
 	public void mergeNavigationOptions(final NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		presenter.applyOptions(navigationOptions);
+		applyNavigationOptions();
 	}
 
-//	private void applyNavigationOptions() {
-//		if (getParentStackController() != null) {
-//			getParentStackController().getPresenter().applyOptions(navigationOptions);
-//		}
-//	}
+	private void applyNavigationOptions() {
+		if (getParentStackController() != null) {
+			getParentStackController().getTopBar().setTitle(navigationOptions.title);
+			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
+			getParentStackController().getTopBar().setTitleTextColor(navigationOptions.topBarTextColor);
+			getParentStackController().getTopBar().setTitleFontSize(navigationOptions.topBarTextFontSize);
+		}
+	}
 
 	public NavigationOptions getNavigationOptions() {
 		return navigationOptions;

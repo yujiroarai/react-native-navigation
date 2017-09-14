@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
-import com.reactnativenavigation.presentation.BasePresenter;
-import com.reactnativenavigation.presentation.StackControllerPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.TopBar;
 
@@ -21,11 +19,6 @@ public class StackController extends ParentController {
 
 	public StackController(final Activity activity, String id) {
 		this(activity, id, new StackAnimator(activity));
-	}
-
-	@Override
-	protected BasePresenter initPresenter() {
-		return new StackControllerPresenter(this);
 	}
 
 	public StackController(final Activity activity, String id, StackAnimator animator) {
