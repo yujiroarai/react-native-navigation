@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 
 public class ContainerViewController extends ViewController {
 
@@ -28,6 +29,7 @@ public class ContainerViewController extends ViewController {
 	}
 
 	private final String containerName;
+	private OptionsPresenter optionsPresenter;
 
 	private final ContainerViewCreator viewCreator;
 	private final NavigationOptions navigationOptions;
@@ -55,7 +57,7 @@ public class ContainerViewController extends ViewController {
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		ensureViewIsCreated();
-		applyNavigationOptions();
+		getOptionsPresenter().applyOptions(navigationOptions);
 		containerView.sendContainerStart();
 	}
 
@@ -79,19 +81,17 @@ public class ContainerViewController extends ViewController {
 
 	public void mergeNavigationOptions(final NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		applyNavigationOptions();
-	}
-
-	private void applyNavigationOptions() {
-		if (getParentStackController() != null) {
-			getParentStackController().getTopBar().setTitle(navigationOptions.title);
-			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
-			getParentStackController().getTopBar().setTitleTextColor(navigationOptions.topBarTextColor);
-			getParentStackController().getTopBar().setTitleFontSize(navigationOptions.topBarTextFontSize);
-		}
+		getOptionsPresenter().applyOptions(navigationOptions);
 	}
 
 	public NavigationOptions getNavigationOptions() {
 		return navigationOptions;
+	}
+
+	private OptionsPresenter getOptionsPresenter() {
+		if (optionsPresenter == null) {
+			optionsPresenter = new OptionsPresenter(getParentStackController());
+		}
+		return optionsPresenter;
 	}
 }
