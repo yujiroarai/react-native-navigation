@@ -15,6 +15,8 @@ public class ContainerViewControllerPresenter extends BasePresenter<ContainerVie
 
 	@Override
 	public void applyOptions(NavigationOptions options) {
-		controller.getParentStackController().getPresenter().applyOptions(options);
+		if (controller.getParentStackController() != null) {
+			controller.getParentStackController().getPresenter().applyOptions(options);
+		}
 	}
 }

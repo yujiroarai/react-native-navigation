@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TestStackAnimator;
+import com.reactnativenavigation.presentation.BasePresenter;
 
 import org.junit.Test;
 
@@ -32,6 +33,11 @@ public class ParentControllerTest extends BaseTest {
 		activity = newActivity();
 		children = new ArrayList<>();
 		uut = new ParentController(activity, "uut") {
+
+			@Override
+			protected BasePresenter initPresenter() {
+				return null;
+			}
 
 			@NonNull
 			@Override

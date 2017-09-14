@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.presentation.BasePresenter;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
@@ -46,6 +47,11 @@ public class ViewControllerTest extends BaseTest {
 	public void canOverrideViewCreation() throws Exception {
 		final View otherView = new View(activity);
 		ViewController myController = new ViewController(activity, "vc") {
+			@Override
+			protected BasePresenter initPresenter() {
+				return null;
+			}
+
 			@Override
 			protected View createView() {
 				return otherView;
