@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.utils.TypefaceLoader;
 
 public class ContainerViewController extends ViewController {
 
@@ -88,6 +89,8 @@ public class ContainerViewController extends ViewController {
 			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
 			getParentStackController().getTopBar().setTitleTextColor(navigationOptions.topBarTextColor);
 			getParentStackController().getTopBar().setTitleFontSize(navigationOptions.topBarTextFontSize);
+			TypefaceLoader typefaceLoader = new TypefaceLoader();
+			getParentStackController().getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(getActivity(), navigationOptions.topBarTextFontFamily));
 		}
 	}
 
