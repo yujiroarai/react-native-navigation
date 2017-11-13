@@ -84,9 +84,13 @@ public class BottomTabs extends AHBottomNavigation {
         return false;
     }
 
+    public void setVisibilityByInitialScreen(StyleParams styleParams) {
+        setVisibility(styleParams.bottomTabsHidden, false);
+    }
+
     public void setVisibility(boolean hidden, boolean animated) {
         if (visibilityAnimator != null) {
-            visibilityAnimator.setVisible(!hidden, animated);
+            visibilityAnimator.setVisible(!hidden, animated, null);
         } else {
             setVisibility(hidden);
         }
